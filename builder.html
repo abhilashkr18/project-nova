@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080912">
+<title>NOVA Builder | Creative Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#080912;--panel:#101321;--line:#272c40;--text:#f3f4ff;--muted:#969db6;--purple:#a892ff;--cyan:#71e5ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:13px}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.top{height:65px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 23px;position:sticky;top:0;background:#080912ed;backdrop-filter:blur(16px);z-index:10}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#b6a1ff,#66e5ff);color:#080912;font-size:19px;display:grid;place-items:center;font-weight:900}
+.brand strong{font-size:18px;letter-spacing:3px}.brand strong span{color:var(--cyan)}
+.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:1.5px;margin-top:3px}
+.pill{border:1px solid #80f2c633;border-radius:99px;color:#80f2c6;padding:7px 10px;font-size:10px}
+.wrap{max-width:1500px;margin:auto;padding:25px}
+.heading{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:24px}
+.eyebrow{color:#b8a6ff;letter-spacing:2px;font-size:10px;font-weight:800}
+h1{font-size:clamp(29px,4vw,43px);letter-spacing:-1.7px;margin:10px 0}
+h2{font-size:17px;margin:0 0 6px}
+p{line-height:1.7}.muted{color:var(--muted)}.small{font-size:11px}
+.layout{display:grid;grid-template-columns:minmax(285px,370px) minmax(0,1fr);gap:18px;align-items:start}
+.panel{min-width:0;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,#ffffff05,#ffffff01);padding:19px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.field-label{display:block;color:#c0c6dc;font-size:11px;margin:15px 0 7px}
+.field{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:#090b15;color:white}
+textarea.field{min-height:78px;resize:vertical;line-height:1.6}
+select.field{appearance:auto}
+.field:focus{border-color:#9f8aff}
+.btn{border:1px solid var(--line);background:#ffffff06;border-radius:9px;padding:10px 12px;font-size:11px;display:inline-flex;justify-content:center;align-items:center;gap:7px}
+.btn:hover{border-color:#a892ff99}
+.btn.primary{border:0;background:linear-gradient(110deg,#b6a1ff,#71e5ff);color:#080912;font-weight:800}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:#ffffff04;border:1px solid var(--line);border-radius:99px;padding:8px 10px;font-size:10px;color:var(--muted)}
+.chip.selected{background:#a892ff19;border-color:#a892ff;color:white}
+.palettes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.palette{border:1px solid var(--line);background:#101321;padding:7px;border-radius:9px;text-align:left;font-size:10px}
+.palette.selected{border-color:#b6a1ff}
+.swatches{display:flex;gap:3px;margin-bottom:7px}
+.swatches i{width:17px;height:17px;display:block;border-radius:5px}
+.toggles{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.toggle{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;padding:10px;background:#ffffff03;border:1px solid var(--line);border-radius:9px}
+.toggle input{accent-color:#a892ff;width:16px;height:16px}
+.divider{border:0;border-top:1px solid var(--line);margin:21px 0}
+.preview-panel{padding:14px;background:#101321}
+.preview-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+.preview-name{font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.preview-actions{display:flex;gap:6px;flex-wrap:wrap}
+.preview-frame{display:flex;justify-content:center;align-items:start;background:#090b14;padding:13px;min-height:470px;border:1px solid var(--line);border-radius:10px}
+iframe{display:block;width:100%;height:680px;border:1px solid #37394d;background:white;border-radius:5px;transition:width .25s}
+iframe.mobile{width:320px;max-width:100%;height:580px}
+.status{font-size:10px;color:#80f2c6;margin-top:12px}
+.notice{font-size:11px;line-height:1.8;color:var(--muted);background:#71e5ff08;border:1px solid #71e5ff1d;border-radius:9px;padding:12px;margin-top:14px}
+.code-panel{display:none;margin-top:13px}.code-panel.show{display:block}
+.code-panel textarea{width:100%;min-height:180px;font-family:monospace;font-size:10px}
+.bottom{padding:19px 0 5px;color:#747b94;font-size:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:950px){.wrap{padding:17px}.layout{grid-template-columns:1fr}.heading{align-items:start;flex-direction:column}.preview-frame{min-height:420px}.preview-panel{padding:10px}}
+@media(max-width:480px){.top{padding:0 13px;height:59px}.brand strong{font-size:16px}.wrap{padding:14px}.panel{padding:14px}.heading{margin-bottom:18px}.preview-frame{padding:7px;min-height:390px}iframe{height:550px}.preview-toolbar{align-items:start;flex-direction:column}.palettes{gap:5px}.palette{padding:6px}.swatches i{width:14px;height:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand">
+  <div class="logo">✳</div>
+  <div><strong>N<span>O</span>VA</strong><small>WEBSITE BUILDER</small></div>
+ </div>
+ <span class="pill">● BROWSER MODE</span>
+</header>
+
+<main class="wrap">
+ <section class="heading">
+  <div><div class="eyebrow">CREATION WORKSPACE / 01</div>
+   <h1>Build your <span style="color:var(--purple)">vision.</span></h1>
+   <p class="muted" style="margin:0;max-width:650px">Customize your website, switch themes, edit sections and export a standalone HTML page. Your canvas, your rules.</p>
+  </div>
+  <div class="btn-row">
+   <button class="btn" id="reset">↺ Reset</button>
+   <button class="btn primary" id="export">↓ Export website</button>
+  </div>
+ </section>
+
+ <div class="layout">
+  <section class="panel">
+   <div class="panel-head"><div><h2>Design controls</h2><div class="muted small">Changes update the preview.</div></div><span style="color:var(--cyan)">✳</span></div>
+
+   <label class="field-label" for="template">STARTING PRESET</label>
+   <select class="field" id="template">
+    <option value="studio">Midnight Creative Studio</option>
+    <option value="portfolio">Personal Portfolio</option>
+    <option value="store">Luxury Store</option>
+    <option value="community">Community Portal</option>
+    <option value="architecture">Architecture Studio</option>
+    <option value="technology">Technology & Robotics</option>
+   </select>
+
+   <label class="field-label" for="brand">WEBSITE / BRAND NAME</label>
+   <input class="field" id="brand" maxlength="65" value="Aurora Studio" placeholder="Your brand">
+
+   <label class="field-label" for="eyebrow">SMALL INTRO LABEL</label>
+   <input class="field" id="eyebrow" maxlength="80" value="INDEPENDENT BY DESIGN">
+
+   <label class="field-label" for="headline">MAIN HEADLINE</label>
+   <textarea class="field" id="headline" maxlength="180">Ideas made visible.</textarea>
+
+   <label class="field-label" for="subtitle">INTRODUCTION</label>
+   <textarea class="field" id="subtitle" maxlength="500">We turn ambitious ideas into thoughtful digital experiences. Discover our work, approach and the possibilities ahead.</textarea>
+
+   <label class="field-label" for="cta">MAIN BUTTON TEXT</label>
+   <input class="field" id="cta" maxlength="45" value="Explore our work">
+
+   <hr class="divider">
+   <div class="panel-head"><div><h2>Visual identity</h2><div class="muted small">Choose a color system.</div></div></div>
+
+   <div class="palettes" id="palettes">
+    <button class="palette selected" data-palette="midnight"><span class="swatches"><i style="background:#10111d"></i><i style="background:#ad95ff"></i><i style="background:#70e6ff"></i></span>Midnight</button>
+    <button class="palette" data-palette="light"><span class="swatches"><i style="background:#f6f3ed"></i><i style="background:#45468a"></i><i style="background:#c4d4eb"></i></span>Editorial</button>
+    <button class="palette" data-palette="ocean"><span class="swatches"><i style="background:#071c26"></i><i style="background:#70ead7"></i><i style="background:#82bdff"></i></span>Ocean</button>
+    <button class="palette" data-palette="gold"><span class="swatches"><i style="background:#15120e"></i><i style="background:#e7c67d"></i><i style="background:#f6ead0"></i></span>Gold</button>
+   </div>
+
+   <label class="field-label" for="density">LAYOUT SPACING</label>
+   <select class="field" id="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option><option value="spacious">Spacious</option></select>
+
+   <hr class="divider">
+   <div class="panel-head"><div><h2>Page sections</h2><div class="muted small">Switch sections on or off.</div></div></div>
+   <div class="toggles">
+    <label class="toggle"><input type="checkbox" id="services" checked> Services / features</label>
+    <label class="toggle"><input type="checkbox" id="about" checked> About section</label>
+    <label class="toggle"><input type="checkbox" id="contact" checked> Contact section</label>
+    <label class="toggle"><input type="checkbox" id="footer" checked> Footer</label>
+   </div>
+
+   <label class="field-label" for="card1">FEATURE CARD 1</label><input class="field" id="card1" maxlength="65" value="Creative direction">
+   <label class="field-label" for="card2">FEATURE CARD 2</label><input class="field" id="card2" maxlength="65" value="Digital experiences">
+   <label class="field-label" for="card3">FEATURE CARD 3</label><input class="field" id="card3" maxlength="65" value="Thoughtful execution">
+
+   <label class="field-label" for="aboutText">ABOUT / SECONDARY TEXT</label>
+   <textarea class="field" id="aboutText" maxlength="500">Good design brings clarity to complex ideas. Our approach is built on curiosity, craft and making useful things for real people.</textarea>
+
+   <label class="field-label" for="contactText">CONTACT MESSAGE</label>
+   <input class="field" id="contactText" maxlength="200" value="Have an idea? Let's start a conversation.">
+
+   <div class="btn-row" style="margin-top:20px">
+    <button class="btn primary" id="update">↻ Refresh preview</button>
+    <button class="btn" id="copy">Copy HTML</button>
+   </div>
+   <div class="notice">This browser-based builder uses safe, predefined layouts and your settings. No account, upload or AI API is needed. It exports a standalone HTML website.</div>
+  </section>
+
+  <section class="panel preview-panel">
+   <div class="preview-toolbar">
+    <div><h2>Live preview</h2><div class="preview-name" id="previewName">aurora-studio · website</div></div>
+    <div class="preview-actions">
+     <button class="btn" id="desktop">Desktop</button>
+     <button class="btn" id="mobile">Mobile</button>
+    </div>
+   </div>
+   <div class="preview-frame"><iframe id="preview" title="Your website preview" sandbox="" srcdoc="<body style='font-family:system-ui;padding:25px;background:#101321;color:white'>Your live website preview is loading.</body>"></iframe></div>
+   <div class="status" id="status" aria-live="polite">● Ready to create</div>
+   <div class="code-panel" id="codePanel">
+    <label class="field-label" for="htmlCode">GENERATED WEBSITE CODE</label>
+    <textarea class="field" id="htmlCode" readonly></textarea>
+   </div>
+  </section>
+ </div>
+ <footer class="bottom"><span>NOVA STUDIO · CREATIVE TOOLS</span><span>Designed to make creation more accessible.</span></footer>
+</main>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const fieldIds=["brand","eyebrow","headline","subtitle","cta","density","services","about","contact","footer","card1","card2","card3","aboutText","contactText"];
+const palettes={
+ midnight:{bg:"#10111d",panel:"#191b2b",text:"#f7f5ff",muted:"#b8b6cc",accent:"#b29aff",second:"#74e6ff",buttonText:"#11111d"},
+ light:{bg:"#f6f3ed",panel:"#ffffff",text:"#22263a",muted:"#646a7d",accent:"#4d4d92",second:"#92a9cb",buttonText:"#ffffff"},
+ ocean:{bg:"#071c26",panel:"#102d39",text:"#efffff",muted:"#afc8ce",accent:"#70ead7",second:"#82bdff",buttonText:"#09202a"},
+ gold:{bg:"#15120e",panel:"#252019",text:"#fff8e8",muted:"#c4b8a3",accent:"#e7c67d",second:"#f7e8c9",buttonText:"#19130b"}
+};
+const presets={
+ studio:{brand:"Aurora Studio",eyebrow:"INDEPENDENT BY DESIGN",headline:"Ideas made visible.",subtitle:"We turn ambitious ideas into thoughtful digital experiences. Discover our work, approach and the possibilities ahead.",cta:"Explore our work",palette:"midnight",card1:"Creative direction",card2:"Digital experiences",card3:"Thoughtful execution"},
+ portfolio:{brand:"Alex Morgan",eyebrow:"DESIGNER · BUILDER · CREATOR",headline:"A little curiosity. A lot of creating.",subtitle:"An independent portfolio for work, experiments and ideas that make the world more interesting.",cta:"View selected work",palette:"light",card1:"Selected projects",card2:"Skills & tools",card3:"Experiments"},
+ store:{brand:"ATELIER OBJECTS",eyebrow:"A CONSIDERED COLLECTION",headline:"Everyday objects. Extraordinary details.",subtitle:"A modern storefront concept for thoughtful products, considered materials and an unmistakable visual identity.",cta:"Explore collection",palette:"gold",card1:"New arrivals",card2:"Featured objects",card3:"Our philosophy"},
+ community:{brand:"OUR COMMUNITY",eyebrow:"LOCAL PEOPLE · SHARED FUTURE",headline:"A place to belong. A community to build.",subtitle:"Discover local services, helpful information and the places that bring our community together.",cta:"Explore the community",palette:"ocean",card1:"Local services",card2:"Education & learning",card3:"Useful places"},
+ architecture:{brand:"FORMA ARCHITECTURE",eyebrow:"SPACE · MATERIAL · LIGHT",headline:"Thoughtful spaces for better living.",subtitle:"An architecture studio exploring residential design, material expression and spaces shaped around people.",cta:"Explore our projects",palette:"light",card1:"Residential design",card2:"Interior concepts",card3:"Spatial planning"},
+ technology:{brand:"NEXUS SYSTEMS",eyebrow:"ENGINEERING WHAT COMES NEXT",headline:"Curiosity builds the future.",subtitle:"A technology and engineering portfolio for robotics, experiments, research and ambitious ideas.",cta:"Explore the lab",palette:"midnight",card1:"Robotics projects",card2:"Engineering systems",card3:"Research & builds"}
+};
+let chosenPalette="midnight",viewMode="desktop",timer;
+let currentHTML="";
+function esc(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
+function read(){
+ const o={};
+ fieldIds.forEach(id=>{const el=$(id);o[id]=el.type==="checkbox"?el.checked:el.value});
+ o.palette=chosenPalette;
+ return o;
+}
+function slug(s){return String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"nova-website"}
+function generate(o){
+ const p=palettes[o.palette]||palettes.midnight;
+ const pad=o.density==="compact"?"42px 7%":o.density==="spacious"?"100px 8%":"70px 7%";
+ const cards=[o.card1,o.card2,o.card3].map((v,i)=>`<article class="card"><span>0${i+1} / FEATURE</span><h3>${esc(v)}</h3><p>${esc(o.subtitle)}</p></article>`).join("");
+ const featureSection=o.services?`<section class="section"><div class="eyebrow">01 / WHAT WE DO</div><h2>Made for what's next<span class="accent">.</span></h2><p class="muted">${esc(o.aboutText)}</p><div class="cards">${cards}</div></section>`:"";
+ const aboutSection=o.about?`<section class="section alt"><div class="eyebrow">02 / THE APPROACH</div><h2>A clear point of view<span class="accent">.</span></h2><p class="muted">${esc(o.aboutText)}</p><div class="rule"></div></section>`:"";
+ const contactSection=o.contact?`<section class="section contact"><div class="eyebrow">LET'S CONNECT</div><h2>Something on your mind<span class="accent">?</span></h2><p class="muted">${esc(o.contactText)}</p><a class="button" href="mailto:hello@example.com">${esc(o.cta)} ↗</a><p class="tiny">Replace hello@example.com with your real contact address.</p></section>`:"";
+ const footer=o.footer?`<footer class="footer"><strong>${esc(o.brand)}</strong><span>Created with a NOVA prototype</span><a href="#">Back to top ↑</a></footer>`:"";
+ return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${esc(o.subtitle.slice(0,155))}"><title>${esc(o.brand)}</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:${p.bg};color:${p.text};font-family:Inter,system-ui,-apple-system,sans-serif}
+a{color:inherit;text-decoration:none}.nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:22px 7%;border-bottom:1px solid ${p.accent}35}
+.logo{font-weight:900;letter-spacing:1.5px;font-size:15px}.links{display:flex;gap:19px;color:${p.muted};font-size:11px}
+.hero{padding:${pad};min-height:430px;display:flex;flex-direction:column;justify-content:center;background:radial-gradient(ellipse at 83% 16%,${p.accent}28,transparent 43%),radial-gradient(ellipse at 10% 90%,${p.second}14,transparent 45%)}
+.eyebrow{font-size:10px;color:${p.accent};font-weight:800;letter-spacing:2px}
+h1{font-size:clamp(37px,7vw,78px);line-height:1.07;letter-spacing:-.055em;max-width:850px;margin:25px 0 15px;overflow-wrap:anywhere}
+.accent{color:${p.accent}}.hero>p,.muted{max-width:660px;color:${p.muted};font-size:13px;line-height:1.9}
+.button{display:inline-block;width:fit-content;margin-top:21px;padding:13px 17px;border-radius:7px;background:${p.accent};color:${p.buttonText};font-size:11px;font-weight:800}
+.section{padding:${pad}}.alt{background:${p.panel}}h2{font-size:clamp(25px,4vw,43px);letter-spacing:-.04em;margin:15px 0}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:27px}
+.card{border:1px solid ${p.accent}36;border-radius:11px;background:${p.panel};padding:22px 17px;min-width:0}
+.card>span{font-size:9px;letter-spacing:1px;color:${p.accent}}.card h3{font-size:16px;line-height:1.5;margin:25px 0 10px;overflow-wrap:anywhere}
+.card p{font-size:11px;line-height:1.8;color:${p.muted};overflow-wrap:anywhere}.rule{width:75px;height:2px;background:${p.accent};margin-top:23px}
+.contact{background:radial-gradient(ellipse at 80% 80%,${p.accent}16,transparent 45%)}
+.tiny{font-size:9px;color:${p.muted};margin-top:20px;line-height:1.7}
+.footer{padding:23px 7%;display:flex;justify-content:space-between;flex-wrap:wrap;gap:13px;border-top:1px solid ${p.accent}35;color:${p.muted};font-size:10px}.footer strong{color:${p.text}}
+@media(max-width:620px){.nav{padding:18px 5%}.links{gap:10px;font-size:9px}.hero,.section{padding:50px 6%}.hero{min-height:350px}h1{font-size:44px}.cards{grid-template-columns:1fr}.card{padding:18px}.footer{padding:20px 6%}}
+</style></head>
+<body>
+<header class="nav"><a class="logo" href="#">${esc(o.brand)}</a><nav class="links"><a href="#work">Explore</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav></header>
+<main><section class="hero"><div class="eyebrow">${esc(o.eyebrow)}</div><h1>${esc(o.headline).replace(/\n/g,"<br>")}</h1><p>${esc(o.subtitle)}</p><a class="button" href="#work">${esc(o.cta)} ↗</a></section>
+<div id="work">${featureSection}</div><div id="approach">${aboutSection}</div><div id="contact">${contactSection}</div></main>
+${footer}</body></html>`;
+}
+function update(){
+ const o=read();currentHTML=generate(o);
+ $("preview").srcdoc=currentHTML;
+ $("previewName").textContent=slug(o.brand)+" · website";
+ $("status").textContent="● Preview updated · "+new Date().toLocaleTimeString();
+}
+function schedule(){clearTimeout(timer);$("status").textContent="● Updating preview…";timer=setTimeout(update,280)}
+function notify(message){$("status").textContent="● "+message}
+document.querySelectorAll(".field").forEach(el=>el.addEventListener("input",schedule));
+$("palettes").querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{
+ chosenPalette=btn.dataset.palette;
+ $("palettes").querySelectorAll("button").forEach(b=>b.classList.toggle("selected",b===btn));
+ schedule();
+}));
+$("template").addEventListener("change",()=>{
+ const preset=presets[$("template").value];if(!preset)return;
+ Object.keys(preset).forEach(key=>{if($(key))$(key).value=preset[key]});
+ chosenPalette=preset.palette;
+ $("palettes").querySelectorAll("button").forEach(b=>b.classList.toggle("selected",b.dataset.palette===chosenPalette));
+ ["services","about","contact","footer"].forEach(id=>$(id).checked=true);
+ $("density").value="comfortable";schedule();notify("Preset applied");
+});
+$("update").addEventListener("click",()=>{update();notify("Preview refreshed")});
+$("desktop").addEventListener("click",()=>{$("preview").classList.remove("mobile");viewMode="desktop";notify("Desktop preview")});
+$("mobile").addEventListener("click",()=>{$("preview").classList.add("mobile");viewMode="mobile";notify("Mobile preview")});
+function download(text,name,type){
+ const url=URL.createObjectURL(new Blob([text],{type}));
+ const a=document.createElement("a");a.href=url;a.download=name;
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+$("export").addEventListener("click",()=>{
+ update();download(currentHTML,slug($("brand").value)+".html","text/html;charset=utf-8");
+ notify("Website HTML download started");
+});
+$("copy").addEventListener("click",async()=>{
+ update();$("htmlCode").value=currentHTML;$("codePanel").classList.add("show");
+ try{await navigator.clipboard.writeText(currentHTML);notify("HTML copied")}
+ catch(e){$("htmlCode").focus();$("htmlCode").select();notify("Code selected. Use Copy from your browser if needed")}
+});
+$("reset").addEventListener("click",()=>{
+ const preset=presets.studio;
+ Object.keys(preset).forEach(key=>{if($(key))$(key).value=preset[key]});
+ chosenPalette=preset.palette;
+ ["services","about","contact","footer"].forEach(id=>$(id).checked=true);
+ $("density").value="comfortable";$("template").value="studio";
+ $("palettes").querySelectorAll("button").forEach(b=>b.classList.toggle("selected",b.dataset.palette===chosenPalette));
+ $("codePanel").classList.remove("show");$("preview").classList.remove("mobile");viewMode="desktop";update();notify("Builder reset");
+});
+update();
+})();
+</script>
+</body>
+</html>
